@@ -1,4 +1,13 @@
 ---
+import { getLocalePath, getTranslations, type Locale } from "@/i18n/translations"
+
+interface Props {
+  locale: Locale
+}
+
+const { locale } = Astro.props
+const copy = getTranslations(locale)
+const localePath = getLocalePath(locale)
 const currentYear = new Date().getFullYear()
 ---
 
@@ -10,20 +19,19 @@ const currentYear = new Date().getFullYear()
   >
     <span class="text-sm sm:text-center text-zinc-800/90 dark:text-zinc-200/90"
       >© {currentYear}
-      <a href="https://prophetcode.com/" class="hover:underline">Prophet Code</a>. Casi
-      todos los derechos reservados
+      <a href="https://prophetcode.com/" class="hover:underline">Prophet Code</a>. {copy.footer.rights}
     </span>
     <ul
       class="flex flex-wrap items-center mt-3 text-sm font-medium dark:text-white/90 sm:mt-0"
     >
       <li>
-        <a class="hover:underline me-4 md:me-6" href="/#sobre-mi">
-          Sobre mí
+        <a class="hover:underline me-4 md:me-6" href={`${localePath}#sobre-mi`}>
+          {copy.footer.about}
         </a>
       </li>
       <li>
         <a class="hover:underline" id="contacto" href="mailto:alexanderavilab@gmail.com">
-          Contacto
+          {copy.footer.contact}
         </a>
       </li>
     </ul>

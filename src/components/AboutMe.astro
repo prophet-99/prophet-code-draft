@@ -1,29 +1,28 @@
 ---
- const personalImageAlt = "Alexander Avila"
+import { getTranslations, type Locale } from "@/i18n/translations"
+
+interface Props {
+  locale: Locale
+}
+
+const { locale } = Astro.props
+const copy = getTranslations(locale)
+const personalImageAlt = "Alexander Avila"
 ---
 
 <article class="flex flex-col items-center justify-center gap-8 text-gray-700 dark:text-gray-300 md:flex-row">
   <div class="[&>p]:mb-4 [&>p>strong]:text-red-500 dark:[&>p>strong]:text-red-300 [&>p>strong]:font-normal [&>p>strong]:font-mono text-pretty order-2 md:order-1">
     <p> 
-      Me llamo Alexander Ávila Briones, soy Ingeniero de Sistemas y 
-      <strong>Senior Full Stack Developer / AI Engineer</strong>. Cuento con experiencia en
-      <strong>arquitectura de software, IA aplicada, desarrollo backend, cloud y frontend</strong>,
-      creando soluciones modernas y escalables para generar impacto real en los negocios.
+      {copy.about.introStart}<strong>{copy.about.role}</strong>{copy.about.introMiddle}<strong>{copy.about.specialties}</strong>{copy.about.introEnd}
     </p>
 
     <p>
-      He trabajado con equipos y clientes de <strong>Perú, España, Costa Rica, Brasil y México</strong>,
-      participando en proyectos para banca, educación, seguros y sistemas financieros. Cuento con amplia
-      experiencia en <strong>Angular</strong>, tecnología sobre la cual dicto conferencias, cursos y contenido
-      técnico. <br /> Poseo las certificaciones <strong>OCP Java SE 17</strong> y
-      <strong>AWS Certified Developer</strong>, fortaleciendo mi perfil como desarrollador backend y
-      especialista en soluciones cloud.
+      {copy.about.backgroundStart}<strong>{copy.about.countries}</strong>{copy.about.backgroundMiddle}<strong>{copy.about.angular}</strong>{copy.about.backgroundEnd}
+      <br /> {copy.about.certificationsStart}<strong>{copy.about.ocp}</strong>{copy.about.certificationsMiddle}<strong>{copy.about.aws}</strong>{copy.about.certificationsEnd}
     </p>
 
     <p>
-      Además, me dedico a crear contenido sobre programación. He dictado cursos en plataformas como <strong>EDteam</strong>
-      y en mi canal <strong>Prophet Code</strong>, donde comparto conocimientos y herramientas para desarrolladores, con el
-      objetivo de inspirar y educar a la comunidad tecnológica.
+      {copy.about.contentStart}<strong>{copy.about.edteam}</strong>{copy.about.contentMiddle}<strong>{copy.about.prophetCode}</strong>{copy.about.contentEnd}
     </p>
   </div>
 

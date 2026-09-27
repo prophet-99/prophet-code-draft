@@ -2,17 +2,31 @@
 import SunIcon from "./icons/Sun.astro"
 import MoonIcon from "./icons/Moon.astro"
 import SystemIcon from "./icons/System.astro"
+import { getTranslations, type Locale } from "@/i18n/translations"
 
-const THEMES = ["Light", "Dark", "System"]
+interface Props {
+  locale: Locale
+}
+
+const { locale } = Astro.props
+const copy = getTranslations(locale)
+const THEMES = [
+  { value: "light", label: copy.theme.light },
+  { value: "dark", label: copy.theme.dark },
+  { value: "system", label: copy.theme.system },
+]
 ---
 
 <div class="relative ml-1 mr-1">
   <button
-    transition:persist
     id="theme-toggle-btn"
+    type="button"
     class="appearance-none border-none flex hover:scale-125 transition"
+    aria-haspopup="menu"
+    aria-expanded="false"
+    aria-controls="themes-menu"
   >
-    <span class="sr-only">Elige el tema</span>
+    <span class="sr-only">{copy.theme.label}</span>
     <SunIcon id="light" class="theme-toggle-icon size-5 transition-all" />
     <MoonIcon
       id="dark"
@@ -24,15 +38,22 @@ const THEMES = ["Light", "Dark", "System"]
     />
   </button>
   <div
-    transition:persist
     id="themes-menu"
     class="absolute hidden scale-80 top-8 right-0 text-sm p-1 min-w-[8rem] rounded-md border border-gray-100 bg-white/90 dark:bg-gray-900/90 dark:border-gray-500/20 shadow-[0_3px_10px_rgb(0,0,0,0.2)] backdrop-blur-md"
   >
-    <ul>
+    <ul role="menu">
       {
         THEMES.map((theme) => (
-          <li class="themes-menu-option px-2 py-1.5 cursor-default hover:bg-neutral-400/40 dark:hover:bg-gray-500/50 rounded-sm">
-            {theme}
+          <li role="none">
+            <button
+              role="menuitemradio"
+              aria-checked="false"
+              type="button"
+              data-theme={theme.value}
+              class="themes-menu-option block w-full px-2 py-1.5 text-left hover:bg-neutral-400/40 dark:hover:bg-gray-500/50 rounded-sm"
+            >
+              {theme.label}
+            </button>
           </li>
         ))
       }
@@ -62,8 +83,6 @@ const THEMES = ["Light", "Dark", "System"]
 <script is:inline>
   let remove = null
   const matchMedia = window.matchMedia("(prefers-color-scheme: dark)")
-  const themesMenu = document.getElementById("themes-menu")
-
   const getThemePreference = () => {
     if (typeof localStorage !== "undefined") {
       return localStorage.getItem("theme") ?? "system"
@@ -77,6 +96,9 @@ const THEMES = ["Light", "Dark", "System"]
   const updateIcon = (themePreference) => {
     document.querySelectorAll(".theme-toggle-icon").forEach((element) => {
       element.style.scale = element.id === themePreference ? "1" : "0"
+    })
+    document.querySelectorAll("[data-theme]").forEach((element) => {
+      element.setAttribute("aria-checked", String(element.getAttribute("data-theme") === themePreference))
     })
   }
 
@@ -100,19 +122,30 @@ const THEMES = ["Light", "Dark", "System"]
 
   updateTheme()
 
-  document.addEventListener("click", () => themesMenu.classList.remove("open"))
+  document.addEventListener("click", (event) => {
+    const target = event.target
+    if (!(target instanceof Element)) return
 
-  document.getElementById("theme-toggle-btn").addEventListener("click", (e) => {
-    e.stopPropagation()
-    const isClosed = !themesMenu.classList.contains("open")
-    themesMenu.classList[isClosed ? "add" : "remove"]("open")
-  })
+    const themesMenu = document.getElementById("themes-menu")
+    const themeButton = target.closest("#theme-toggle-btn")
+    const themeOption = target.closest("[data-theme]")
 
-  document.querySelectorAll(".themes-menu-option").forEach((element) => {
-    element.addEventListener("click", (e) => {
-      localStorage.setItem("theme", e.target.innerText.toLowerCase().trim())
+    if (themeButton) {
+      event.stopPropagation()
+      const isOpen = !themesMenu?.classList.contains("open")
+      themesMenu?.classList.toggle("open", isOpen)
+      themeButton.setAttribute("aria-expanded", String(isOpen))
+      return
+    }
+
+    if (themeOption instanceof HTMLElement) {
+      const theme = themeOption.dataset.theme
+      if (theme) localStorage.setItem("theme", theme)
       updateTheme()
-    })
+    }
+
+    themesMenu?.classList.remove("open")
+    document.getElementById("theme-toggle-btn")?.setAttribute("aria-expanded", "false")
   })
 
   document.addEventListener('astro:after-swap', () => {

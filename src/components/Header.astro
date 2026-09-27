@@ -1,25 +1,33 @@
 ---
 import ThemeToggle from "./ThemeToggle.astro"
+import LanguageToggle from "./LanguageToggle.astro"
+import { getLocalePath, getTranslations, type Locale } from "@/i18n/translations"
 
+interface Props {
+  locale: Locale
+}
+
+const { locale } = Astro.props
+const copy = getTranslations(locale)
+const localePath = getLocalePath(locale)
 const navItems = [
   {
-    title: "Experiencia",
-    label: "experiencia",
-    url: "/#experiencia",
+    title: copy.nav.experience,
+    sectionId: "experiencia",
+    url: `${localePath}#experiencia`,
   },
   {
-    title: "Proyectos",
-    label: "proyectos",
-    url: "/#proyectos",
+    title: copy.nav.projects,
+    sectionId: "proyectos",
+    url: `${localePath}#proyectos`,
   },
   {
-    title: "Sobre mí",
-    label: "sobre-mi",
-    url: "/#sobre-mi",
+    title: copy.nav.about,
+    sectionId: "sobre-mi",
+    url: `${localePath}#sobre-mi`,
   },
   {
-    title: "Contacto",
-    label: "contacto",
+    title: copy.nav.contact,
     url: "mailto:prophet.code99@gmail.com",
   },
 ]
@@ -29,33 +37,35 @@ const navItems = [
   class="fixed top-0 z-10 flex items-center justify-center w-full mx-auto mt-2"
 >
   <nav
-    class="flex px-3 text-sm font-medium rounded-full text-gray-600 dark:text-gray-200 justify-center items-center"
+    class="flex px-1 min-[375px]:px-2 text-xs min-[400px]:text-sm font-medium rounded-full text-gray-600 dark:text-gray-200 justify-center items-center"
   >
     {
       navItems.map((link) => (
         <a
-          class="relative block px-2 py-2 transition hover:text-yellow-500 dark:hover:text-yellow-500 text-nowrap"
-          aria-label={link.label}
+          class="relative block px-1 min-[375px]:px-2 py-2 transition hover:text-yellow-500 dark:hover:text-yellow-500 text-nowrap"
+          aria-label={link.title}
+          data-section={link.sectionId}
           href={link.url}
         >
           {link.title}
         </a>
       ))
     }
-    <ThemeToggle />
+    <ThemeToggle locale={locale} />
+    <LanguageToggle locale={locale} />
   </nav>
 </header>
 
 <script>
   document.addEventListener("astro:page-load", () => {
     const sections = document.querySelectorAll("section");
-    const navItems = document.querySelectorAll("header nav a");
+    const navItems = document.querySelectorAll("header nav a[data-section]");
 
     const callbackObserver = (entries: any[]) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
           navItems.forEach((item) => {
-            if (item.getAttribute("aria-label") === entry.target.id) item.classList.add("text-yellow-500")
+            if (item.getAttribute("data-section") === entry.target.id) item.classList.add("text-yellow-500")
             else item.classList.remove("text-yellow-500")
           })
         }

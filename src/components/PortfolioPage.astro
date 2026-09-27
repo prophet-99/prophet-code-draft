@@ -1,0 +1,54 @@
+---
+import Layout from "@/layouts/Layout.astro"
+
+import Briefcase from "@/components/icons/Briefcase.astro"
+import CodeIcon from "@/components/icons/Code.astro"
+import ProfileCheck from "@/components/icons/ProfileCheck.astro"
+import AboutMe from "@/components/AboutMe.astro"
+import Experience from "@/components/Experience.astro"
+import Projects from "@/components/Projects.astro"
+import SectionContainer from "@/components/SectionContainer.astro"
+import Hero from "@/components/Hero.astro"
+import TitleSection from "@/components/TitleSection.astro"
+import { getTranslations, type Locale } from "@/i18n/translations"
+
+interface Props {
+  locale: Locale
+}
+
+const { locale } = Astro.props
+const copy = getTranslations(locale)
+---
+
+<Layout title={copy.seo.title} description={copy.seo.description} locale={locale}>
+  <main class="px-4">
+    <SectionContainer class="py-16 md:py-36">
+      <Hero locale={locale} />
+    </SectionContainer>
+    <div class="space-y-24">
+      <SectionContainer id="experiencia">
+        <TitleSection>
+          <Briefcase class="size-8" />
+          {copy.sections.experience}
+        </TitleSection>
+        <Experience locale={locale} />
+      </SectionContainer>
+
+      <SectionContainer id="proyectos">
+        <TitleSection>
+          <CodeIcon class="size-7" />
+          {copy.sections.projects}
+        </TitleSection>
+        <Projects locale={locale} />
+      </SectionContainer>
+
+      <SectionContainer id="sobre-mi">
+        <TitleSection>
+          <ProfileCheck class="size-8" />
+          {copy.sections.about}
+        </TitleSection>
+        <AboutMe locale={locale} />
+      </SectionContainer>
+    </div>
+  </main>
+</Layout>

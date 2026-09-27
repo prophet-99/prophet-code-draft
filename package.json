@@ -2,6 +2,14 @@
   "name": "prophet-code-draft",
   "version": "0.0.1",
   "packageManager": "pnpm@10.33.0",
+  "engines": {
+    "node": "18.20.5"
+  },
+  "pnpm": {
+    "overrides": {
+      "@astrojs/language-server": "2.7.6"
+    }
+  },
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",

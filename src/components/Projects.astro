@@ -18,6 +18,14 @@ import IBMIcon from "./icons/Ibm.astro"
 import FlutterIcon from "./icons/Flutter.astro"
 import BootstrapIcon from "./icons/Bootstrap.astro"
 import TwilioIcon from "./icons/Twilio.astro"
+import { getTranslations, type Locale } from "@/i18n/translations"
+
+interface Props {
+  locale: Locale
+}
+
+const { locale } = Astro.props
+const copy = getTranslations(locale)
 
 const TAGS = {
   NEXT: {
@@ -104,29 +112,25 @@ const TAGS = {
 
 const PROJECTS = [
   {
-    title: "Drowsiness Project - IoT + Deep Learning + Software",
-    description: "Sistema IoT que detecta somnolencia en conductores y envía alertas en tiempo real. Desarrollado con Angular, Spring Boot, Raspberry Pi, MediaPipe y Python. Probado en Lambayeque, Perú.",
+    id: "drowsiness" as const,
     github: 'https://github.com/prophet-99/drowsiness-app-frontend',
     image: "/projects/drowsiness-project.webp",
     tags: [TAGS.ANGULAR, TAGS.SPRING, TAGS.RASPBERRY_PI, TAGS.PYTHON],
   },
   {
-    title: "CIMA Aula Virtual - Plataforma",
-    description: "Plataforma virtual desarrollada durante la pandemia para el colegio CIMA, utilizada por los alumnos. Lideré un equipo de frontend con Angular, y el backend fue implementado con Spring Boot y Node.js.",
+    id: "cima" as const,
     link: 'https://plataforma.colegiocima.edu.pe/CampusVirtual',
     image: "/projects/cima.webp",
     tags: [TAGS.ANGULAR, TAGS.SPRING, TAGS.EXPRESS, TAGS.BOOTSTRAP]
   },
   {
-    title: "Portafolio Prophet Code - Prototipo",
-    description: "Prototipo de portafolio para la marca Prophet Code, diseñado en Figma. Muestra mi experiencia en desarrollo de software con un diseño moderno, intuitivo y adaptable a móviles.",
+    id: "portfolio" as const,
     link: "https://www.figma.com/proto/t6Tp4tyj4slndIjUxUYr0a/Portfolio?page-id=0%3A1&node-id=1-2&node-type=CANVAS&viewport=553%2C-88%2C0.18&t=8j7zMbORFi1ADAYC-1&scaling=min-zoom&content-scaling=fixed&starting-point-node-id=1%3A2",
     image: "/projects/prophet-code-portfolio.webp",
     tags: [TAGS.FIGMA],
   },
   {
-    title: "JMPAquaculture - Monitor",
-    description: "Mi primera aplicación para un cliente real en Brasil fue una app de monitoreo de acuicultura, desarrollada en Spring Boot y con Twilio para notificaciones en tiempo real. La primera versión fue en Java con JSP.",
+    id: "jmp" as const,
     github: 'https://github.com/prophet-99/jmpaquaculture',
     image: "/projects/jmpaquaculture.webp",
     tags: [TAGS.SPRING, TAGS.TWILIO, TAGS.BOOTSTRAP],
@@ -162,12 +166,12 @@ const PROJECTS = [
 <div class="flex flex-col gap-y-16">
   {
     PROJECTS.map(
-      ({ image, title, description, tags, link, github }) => (
+      ({ id, image, tags, link, github }) => (
         <article class="flex flex-col space-x-0 space-y-8 group md:flex-row md:space-x-8 md:space-y-0">
           <div class="w-full md:w-1/2">
             <div class="relative flex flex-col items-center col-span-6 row-span-5 gap-8 transition duration-500 ease-in-out transform shadow-xl overflow-clip rounded-xl sm:rounded-xl md:group-hover:-translate-y-1 md:group-hover:shadow-2xl lg:border lg:border-gray-800 lg:hover:border-gray-700 lg:hover:bg-gray-800/50">
               <img
-                alt="Proyectos - Prophet Code"
+                alt={`${copy.projectsUi.imageAlt}: ${copy.projects[id].title}`}
                 class="object-cover object-top w-full h-56 transition duration-500 sm:h-full md:scale-110 md:group-hover:scale-105"
                 src={image}
               />
@@ -176,7 +180,7 @@ const PROJECTS = [
 
           <div class="w-full md:w-1/2 md:max-w-lg">
             <h3 class="text-2xl font-bold text-gray-800 dark:text-gray-100">
-              {title}
+              {copy.projects[id].title}
             </h3>
             <div class="flex flex-wrap mt-2">
               <ul class="flex flex-row flex-wrap mb-2 gap-2">
@@ -191,18 +195,18 @@ const PROJECTS = [
                   </li>
                 ))}
               </ul>
-              <div class="mt-2 text-gray-700 dark:text-gray-400">{description}</div>
+              <div class="mt-2 text-gray-700 dark:text-gray-400">{copy.projects[id].description}</div>
               <footer class="flex items-end justify-start mt-4 gap-x-4">
                   {github && (
                     <LinkButton href={github}>
                       <GitHubIcon class="size-6" />
-                      Code
+                      {copy.projectsUi.code}
                     </LinkButton>
                   )}
                   {link && (
                     <LinkButton href={link}>
                       <LinkIcon class="size-4" />
-                      Preview
+                      {copy.projectsUi.preview}
                     </LinkButton>
                   )}
                 </footer>

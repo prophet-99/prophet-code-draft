@@ -1,0 +1,101 @@
+---
+import GlobeIcon from "./icons/Globe.astro"
+import { getLocalePath, getTranslations, type Locale } from "@/i18n/translations"
+
+interface Props {
+  locale: Locale
+}
+
+const { locale } = Astro.props
+const copy = getTranslations(locale)
+const languageOptions = [
+  { locale: "en" as const, label: copy.language.english },
+  { locale: "es" as const, label: copy.language.spanish },
+]
+---
+
+<div class="relative ml-1 mr-1">
+  <button
+    id="language-toggle-btn"
+    type="button"
+    class="flex items-center gap-0.5 appearance-none border-none transition hover:scale-110"
+    aria-label={copy.language.label}
+    aria-haspopup="menu"
+    aria-expanded="false"
+    aria-controls="language-menu"
+  >
+    <GlobeIcon class="size-5" />
+    <span class="text-[10px] font-bold leading-none uppercase">{locale}</span>
+  </button>
+  <div
+    id="language-menu"
+    class="absolute hidden scale-80 top-8 right-0 text-sm p-1 min-w-[8rem] rounded-md border border-gray-100 bg-white/90 dark:bg-gray-900/90 dark:border-gray-500/20 shadow-[0_3px_10px_rgb(0,0,0,0.2)] backdrop-blur-md"
+  >
+    <ul role="menu">
+      {
+        languageOptions.map((option) => (
+          <li role="none">
+            <a
+              role="menuitemradio"
+              aria-checked={option.locale === locale ? "true" : "false"}
+              class:list={[
+                "language-menu-option block px-2 py-1.5 rounded-sm hover:bg-neutral-400/40 dark:hover:bg-gray-500/50",
+                { "font-semibold text-yellow-600 dark:text-yellow-500": option.locale === locale },
+              ]}
+              href={getLocalePath(option.locale)}
+              data-language-path={getLocalePath(option.locale)}
+            >
+              {option.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</div>
+
+<style>
+  #language-menu.open {
+    display: inline;
+    animation: scale-up-center 0.15s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+  }
+
+  @keyframes scale-up-center {
+    from {
+      transform: scale(0.8);
+      opacity: 0;
+    }
+
+    to {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+</style>
+
+<script>
+  document.addEventListener("click", (event) => {
+    const target = event.target
+    if (!(target instanceof Element)) return
+
+    const menu = document.getElementById("language-menu")
+    const button = target.closest("#language-toggle-btn")
+    const languageLink = target.closest("[data-language-path]")
+
+    if (button) {
+      event.stopPropagation()
+      const isOpen = !menu?.classList.contains("open")
+      menu?.classList.toggle("open", isOpen)
+      button.setAttribute("aria-expanded", String(isOpen))
+      return
+    }
+
+    if (languageLink instanceof HTMLAnchorElement) {
+      const path = languageLink.dataset.languagePath
+      if (path) languageLink.href = `${path}${window.location.hash}`
+    }
+
+    menu?.classList.remove("open")
+    document.getElementById("language-toggle-btn")?.setAttribute("aria-expanded", "false")
+  })
+</script>
