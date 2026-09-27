@@ -82,40 +82,64 @@ const personalImageAlt = "Alexander Avila";
 </div>
 
 <script>
-  const typedTarget = document.querySelector('.js-typed-name');
   const toType = ['Alexander Avila', 'Prophet Code'];
   const delayTypingChar = 120;
   const delayErasingText = 100;
   const delayTypingText = 900;
 
-  let totypeIndex = 0;
-  let charIndex = 0;
-  const typeText = () => {
-    if (!typedTarget) return;
+  let typingTimeout: number | undefined;
+  let animationId = 0;
 
-    if (charIndex < toType[totypeIndex].length) {
-      typedTarget.textContent += toType[totypeIndex].charAt(charIndex);
-      charIndex++;
-      setTimeout(typeText, delayTypingChar);
-    }
-    else setTimeout(eraseText, delayTypingText);
-  };
-  const eraseText = () => {
-    if (!typedTarget) return;
-
-    if (charIndex > 0) {
-      typedTarget.textContent = toType[totypeIndex].substring(0, charIndex-1);
-      charIndex = charIndex-1;
-      setTimeout(eraseText, delayErasingText);
-    }
-    else {
-      totypeIndex++;
-      if (totypeIndex >= toType.length) totypeIndex = 0;
-      setTimeout(typeText, delayTypingText);
-    }
+  const stopTypingAnimation = () => {
+    animationId++;
+    if (typingTimeout !== undefined) window.clearTimeout(typingTimeout);
+    typingTimeout = undefined;
   };
 
-  document.addEventListener('astro:page-load', () => {
-    if (toType[totypeIndex].length) setTimeout(typeText, delayTypingText);
-  });
+  const startTypingAnimation = () => {
+    stopTypingAnimation();
+
+    const typedTarget = document.querySelector<HTMLElement>('.js-typed-name');
+    if (!typedTarget) return;
+
+    const currentAnimationId = animationId;
+    let toTypeIndex = 0;
+    let charIndex = 0;
+    typedTarget.textContent = '';
+
+    const schedule = (callback: () => void, delay: number) => {
+      typingTimeout = window.setTimeout(() => {
+        if (currentAnimationId !== animationId || !typedTarget.isConnected) return;
+        callback();
+      }, delay);
+    };
+
+    const eraseText = () => {
+      if (charIndex > 0) {
+        charIndex--;
+        typedTarget.textContent = toType[toTypeIndex].substring(0, charIndex);
+        schedule(eraseText, delayErasingText);
+        return;
+      }
+
+      toTypeIndex = (toTypeIndex + 1) % toType.length;
+      schedule(typeText, delayTypingText);
+    };
+
+    const typeText = () => {
+      if (charIndex < toType[toTypeIndex].length) {
+        typedTarget.textContent += toType[toTypeIndex].charAt(charIndex);
+        charIndex++;
+        schedule(typeText, delayTypingChar);
+        return;
+      }
+
+      schedule(eraseText, delayTypingText);
+    };
+
+    schedule(typeText, delayTypingText);
+  };
+
+  document.addEventListener('astro:before-swap', stopTypingAnimation);
+  document.addEventListener('astro:page-load', startTypingAnimation);
 </script>
