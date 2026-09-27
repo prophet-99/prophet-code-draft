@@ -4,39 +4,51 @@ import ExperienceItem from "./ExperienceItem.astro"
 const EXPERIENCE = [
   {
     date: "Febrero 2026 - Actualmente",
-    title: "Full Stack AI Developer",
-    company: "Minsait | Cliente: MAEUEC España",
+    title: "Full Stack Developer",
+    titleSeparator: "·",
+    titleSecondary: "AI Engineer",
+    company: "Minsait | Cliente: SINAVI, España",
     description:
-      "Desarrollo soluciones full stack basadas en inteligencia artificial, integrando frontend y backend para casos de visión artificial y detección en tiempo real. Trabajo con React, Angular, FastAPI y MediaPipe para construir experiencias interactivas y eficientes. Además, optimicé un chatbot con n8n para automatizar el registro de información y mejorar flujos operativos internos.",
+      "Desarrollo soluciones full stack basadas en IA, combinando frontend, backend y cloud. Implemento autenticación biométrica con detección de identidad y liveness en tiempo real usando Python, FastAPI, MediaPipe y React. Participo en una plataforma RAG con LangChain, PostgreSQL/pgvector, AWS S3 y Redis. Además, diseño arquitecturas event-driven para el procesamiento asíncrono de documentos con S3, SQS, SNS y Lambda, y optimizo un chatbot con n8n y Next.js para trazabilidad operacional.",
     tools:
-      "JavaScript, TypeScript, Python, React, Angular, FastAPI, MediaPipe, n8n",
+      "Python, FastAPI, React, Next.js, MediaPipe, LangChain, PostgreSQL, pgvector, AWS, Redis, n8n",
   },
   {
     date: "Octubre 2024 - Enero 2026",
-    title: "Full Stack Developer (Frontend focus)",
-    company: "Encora | Cliente: BCP Perú",
+    title: "Full Stack Developer",
+    titleSeparator: "·",
+    titleSecondary: "AI Engineer",
+    company: "Encora | Cliente: BCP, Perú",
     description:
-      "Desarrollé y mantuve funcionalidades para Cocos y Lucas, producto de BCP enfocado en cambio de divisas. Trabajé principalmente con Angular, aplicando patrones, buenas prácticas y mejoras de interfaz en una arquitectura productiva sobre AWS CloudFront y WAF. También participé en integraciones con Redis para intercambio de datos entre frontends, monitoreo con Grafana y flujos de CI/CD con Jenkins.",
+      "Desarrollé funcionalidades core para Cocos & Lucas, plataforma de cambio de divisas de BCP, con Angular y TypeScript. Implementé un blog con SSR e ISR, testing automatizado y mejoras de performance. Desarrollé servicios backend con Python, FastAPI, PostgreSQL, Redis y Pytest. Participé en una solución RAG interna para documentación técnica y recuperación de conocimiento con Amazon Bedrock y React/Next.js. Contribuí a infraestructura, seguridad y observabilidad en AWS con CloudFront, WAF y Grafana, validaciones CI/CD con GitHub Actions y Jenkins, e integración de eventos de negocio con Google Tag Manager.",
     tools:
-      "JavaScript, TypeScript, Angular, AWS, Jenkins, GTM, Figma, Zeplin, Spring Boot, Redis, Grafana",
+      "Python, FastAPI, PostgreSQL, Redis, Pytest, Amazon Bedrock, React, Next.js, Angular, TypeScript, AWS CloudFront, AWS WAF, Grafana, GitHub Actions, Jenkins, Google Tag Manager",
   },
   {
     date: "Octubre 2022 - Septiembre 2024",
-    title: "Full Stack Developer (Frontend focus)",
-    company: "Minsait PE | Cliente: MAEUEC España",
+    title: "Full Stack Developer",
+    company: "Indra Sistemas | Cliente: MAEUEC, España",
     description:
-      "Lideré la arquitectura frontend y la definición de estándares visuales para aplicaciones Angular y Vanilla JavaScript. Implementé guías de estilo, componentes reutilizables con Storybook y propuse una arquitectura de microfrontends con Module Federation. También migré una aplicación de Angular 8 a Angular 16, optimizando el bundle, y desarrollé APIs y microservicios con Spring Boot y Node.js/Express.",
+      "Desarrollé soluciones full stack para MAEUEC de España. Implementé flujos event-driven con AWS SQS y S3 para procesamiento asíncrono y distribución de archivos con presigned URLs. Desarrollé APIs y servicios backend con Python, FastAPI y SQL Server. Mejoré la observabilidad de servicios y eventos de negocio con AWS CloudWatch, Grafana y dashboards en React. Estandaricé testing y quality gates en CI con Pytest, Karma, Jest, SonarQube y Jenkins. Propuse una arquitectura de microfrontends con Angular, pre-caching y optimización de bundles con Webpack, Redux, Tailwind CSS y Docker.",
     tools:
-      "JavaScript, TypeScript, Java, Angular, Microfrontends, Storybook, Spring Boot, Webpack Bundle Analyzer, Bundlephobia, Docker",
+      "Python, FastAPI, SQL Server, AWS SQS, AWS S3, AWS CloudWatch, Grafana, React, Angular, Webpack, Redux, Tailwind CSS, Docker, Pytest, Karma, Jest, SonarQube, Jenkins",
   },
   {
-    date: "Agosto 2019 - Septiembre 2022",
-    title: "Full Stack AI Developer",
-    company: "CIMA Perú",
+    date: "Agosto 2018 - Septiembre 2022",
+    title: "Full Stack Developer",
+    company: "CIMA, Perú",
     description:
-      "Desarrollé soluciones educativas full stack, incluyendo una aplicación de aprendizaje de inglés con IA en Flutter e integración de modelos de texto a voz. Lideré la arquitectura frontend en Angular y propuse Clean Architecture para mejorar la mantenibilidad. También formé a becarios, creé una plataforma de aula virtual con React/Konva y migré sistemas monolíticos en jQuery/PHP hacia TypeScript y Webpack 5.",
+      "Desarrollé servicios backend para una plataforma de aprendizaje de inglés basada en IA con Python, Flask, IBM Watson, NLP y Text-to-Speech. Diseñé REST APIs y microservicios para sistemas académicos y administrativos con Node.js, Express, PostgreSQL y Firebase. Participé en un modelo de Machine Learning en Python para analizar información histórica y progresión académica de estudiantes. Desarrollé módulos de aula virtual con Angular e integré una pizarra interactiva en React y Konva. También realicé mentoría y code reviews para dos practicantes.",
     tools:
-      "Java, Angular, React, Flutter, TypeScript, JavaScript, Sass, Figma, Firebase, Spring Boot, Node.js, PostgreSQL, Webpack 5, Konva, jQuery, PHP, Text-to-Speech, AI Models",
+      "Python, Flask, IBM Watson, NLP, Text-to-Speech, Machine Learning, Node.js, Express, PostgreSQL, Firebase, Angular, React, TypeScript, Konva, SCSS",
+  },
+  {
+    date: "Febrero 2018 - Agosto 2018",
+    title: "Practicante Full Stack Developer",
+    company: "Garzasoft, Perú",
+    description:
+      "Participé en el desarrollo de un sistema de gestión de maquinaria pesada. Implementé módulos backend con Spring Boot y MySQL para el control de kilometraje y procesos logísticos. También realicé ajustes de interfaz, creación de layouts y mejoras visuales con Angular.",
+    tools: "Spring Boot, MySQL, Angular",
   },
 ];
 ---
