@@ -1,0 +1,22 @@
+---
+import type { ProjectTechnology } from "@/data/projects"
+
+interface Props {
+  tags: ProjectTechnology[]
+}
+
+const { tags } = Astro.props
+---
+
+<ul class="flex flex-row flex-wrap gap-2">
+  {
+    tags.map((tag) => (
+      <li>
+        <span class={`flex items-center gap-x-2 rounded-full px-2 py-1 text-xs ${tag.class}`}>
+          <tag.icon class="size-4" />
+          {tag.name}
+        </span>
+      </li>
+    ))
+  }
+</ul>

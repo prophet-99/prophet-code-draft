@@ -1,0 +1,18 @@
+---
+import ProjectCaseStudyPage from "@/components/ProjectCaseStudyPage.astro"
+import { CASE_STUDY_PROJECT_IDS, type CaseStudyProjectId } from "@/data/projects"
+
+export const getStaticPaths = () =>
+  CASE_STUDY_PROJECT_IDS.map((projectId) => ({
+    params: { slug: projectId },
+    props: { projectId },
+  }))
+
+interface Props {
+  projectId: CaseStudyProjectId
+}
+
+const { projectId } = Astro.props
+---
+
+<ProjectCaseStudyPage locale="en" projectId={projectId} />

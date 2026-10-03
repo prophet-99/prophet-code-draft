@@ -5,9 +5,10 @@ import { getLocalePath, getTranslations, type Locale } from "@/i18n/translations
 
 interface Props {
   locale: Locale
+  localizedPaths?: Record<Locale, string>
 }
 
-const { locale } = Astro.props
+const { locale, localizedPaths } = Astro.props
 const copy = getTranslations(locale)
 const localePath = getLocalePath(locale)
 const navItems = [
@@ -52,7 +53,7 @@ const navItems = [
       ))
     }
     <ThemeToggle locale={locale} />
-    <LanguageToggle locale={locale} />
+    <LanguageToggle locale={locale} localizedPaths={localizedPaths} />
   </nav>
 </header>
 

@@ -1,0 +1,288 @@
+---
+import type { CaseStudyBlock } from "@/content/projects"
+
+interface Props {
+  sections: CaseStudyBlock[]
+  contentsLabel: string
+}
+
+const { sections, contentsLabel } = Astro.props
+const titledSections = sections.filter(
+  (section): section is CaseStudyBlock & { title: string } => Boolean(section.title),
+)
+const showTableOfContents = titledSections.length >= 4
+
+const getUntitledSectionLabel = (block: CaseStudyBlock): string | undefined => {
+  if (block.title) return undefined
+  if (block.type === "image") return block.image.alt
+  if (block.type === "gallery") return block.images[0]?.alt
+  if (block.type === "diagram") return block.diagram.alt
+  if (block.type === "callout") return block.label || block.body
+  return undefined
+}
+---
+
+{
+  showTableOfContents && (
+    <nav
+      aria-labelledby="case-study-contents-title"
+      class="mb-12 rounded-2xl border border-gray-200 bg-white/60 p-6 shadow-sm backdrop-blur md:mb-16 md:p-8 dark:border-gray-800 dark:bg-gray-900/50"
+    >
+      <h2
+        id="case-study-contents-title"
+        class="text-sm font-semibold uppercase tracking-[0.16em] text-gray-500 dark:text-gray-400"
+      >
+        {contentsLabel}
+      </h2>
+      <ol class="mt-5 grid gap-3 sm:grid-cols-2">
+        {titledSections.map((section, index) => (
+          <li>
+            <a
+              href={`#${section.id}`}
+              class="group flex items-baseline gap-3 rounded-lg text-gray-700 transition hover:text-yellow-700 focus:outline-none focus-visible:ring focus-visible:ring-yellow-500/80 dark:text-gray-300 dark:hover:text-yellow-300"
+            >
+              <span class="font-mono text-xs text-yellow-600 dark:text-yellow-400">
+                {String(index + 1).padStart(2, "0")}
+              </span>
+              <span class="font-medium group-hover:underline">{section.title}</span>
+            </a>
+          </li>
+        ))}
+      </ol>
+    </nav>
+  )
+}
+
+<article class="case-study-article">
+  {
+    sections.map((block) => (
+      <section
+        id={block.id}
+        aria-label={getUntitledSectionLabel(block)}
+        class:list={[
+          "case-study-block scroll-mt-28 border-t border-gray-200 py-10 md:py-14 dark:border-gray-800",
+          (block.type === "image" || block.type === "gallery" || block.type === "diagram") &&
+            "case-study-block--wide",
+        ]}
+      >
+        {block.type === "text" && (
+          <div class="mx-auto max-w-2xl">
+            <h2 class="text-balance text-2xl font-bold text-gray-900 md:text-3xl dark:text-gray-100">
+              {block.title}
+            </h2>
+            <div class="mt-5 space-y-5">
+              {block.paragraphs.map((paragraph) => (
+                <p class="text-base leading-8 text-gray-700 md:text-lg dark:text-gray-300">{paragraph}</p>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {block.type === "list" && (
+          <div class="mx-auto max-w-2xl">
+            <h2 class="text-balance text-2xl font-bold text-gray-900 md:text-3xl dark:text-gray-100">
+              {block.title}
+            </h2>
+            {block.introduction && (
+              <p class="mt-5 text-base leading-8 text-gray-700 md:text-lg dark:text-gray-300">
+                {block.introduction}
+              </p>
+            )}
+            <ul class="mt-6 space-y-3 text-base leading-8 text-gray-700 md:text-lg dark:text-gray-300">
+              {block.items.map((item) => (
+                <li class="flex gap-3">
+                  <span class="mt-[0.72rem] size-1.5 shrink-0 rounded-full bg-yellow-500" aria-hidden="true" />
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        {block.type === "image" && (
+          <figure class="overflow-hidden rounded-2xl border border-gray-200 bg-gray-100 shadow-lg dark:border-gray-800 dark:bg-gray-900">
+            {block.title && (
+              <h2 class="px-6 pt-6 text-balance text-2xl font-bold text-gray-900 md:px-8 md:pt-8 md:text-3xl dark:text-gray-100">
+                {block.title}
+              </h2>
+            )}
+            <img
+              src={block.image.src}
+              alt={block.image.alt}
+              width={block.image.width}
+              height={block.image.height}
+              loading="lazy"
+              decoding="async"
+              class:list={["h-auto w-full object-cover", block.title && "mt-6"]}
+            />
+            {block.image.caption && (
+              <figcaption class="border-t border-gray-200 px-6 py-4 text-sm leading-6 text-gray-600 dark:border-gray-800 dark:text-gray-400">
+                {block.image.caption}
+              </figcaption>
+            )}
+          </figure>
+        )}
+
+        {block.type === "gallery" && block.images.length > 0 && (
+          <div>
+            {block.title && (
+              <h2 class="mb-6 text-balance text-2xl font-bold text-gray-900 md:text-3xl dark:text-gray-100">
+                {block.title}
+              </h2>
+            )}
+            <div class="case-study-gallery" data-count={block.images.length}>
+              {block.images.map((image) => (
+                <figure class="case-study-gallery__item overflow-hidden rounded-2xl border border-gray-200 bg-gray-100 shadow-lg dark:border-gray-800 dark:bg-gray-900">
+                  <img
+                    src={image.src}
+                    alt={image.alt}
+                    width={image.width}
+                    height={image.height}
+                    loading="lazy"
+                    decoding="async"
+                    class="h-full min-h-64 w-full object-cover"
+                  />
+                  {image.caption && (
+                    <figcaption class="border-t border-gray-200 px-5 py-3 text-sm leading-6 text-gray-600 dark:border-gray-800 dark:text-gray-400">
+                      {image.caption}
+                    </figcaption>
+                  )}
+                </figure>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {block.type === "diagram" && (
+          <figure class="rounded-2xl border border-gray-200 bg-white p-4 shadow-lg md:p-8 dark:border-gray-800 dark:bg-gray-900">
+            {block.title && (
+              <h2 class="mb-6 text-balance text-2xl font-bold text-gray-900 md:text-3xl dark:text-gray-100">
+                {block.title}
+              </h2>
+            )}
+            <img
+              src={block.diagram.src}
+              alt={block.diagram.alt}
+              width={block.diagram.width}
+              height={block.diagram.height}
+              loading="lazy"
+              decoding="async"
+              class="mx-auto h-auto max-h-[48rem] w-full object-contain"
+            />
+            {(block.description || block.diagram.caption) && (
+              <figcaption class="mt-5 border-t border-gray-200 pt-4 text-sm leading-6 text-gray-600 dark:border-gray-800 dark:text-gray-400">
+                {block.description || block.diagram.caption}
+              </figcaption>
+            )}
+          </figure>
+        )}
+
+        {block.type === "callout" && (
+          <aside
+            data-emphasis={block.emphasis || "default"}
+            class="case-study-callout mx-auto max-w-3xl rounded-2xl border p-6 shadow-sm md:p-8"
+          >
+            {(block.label || block.title) && (
+              <p class="text-sm font-semibold uppercase tracking-[0.16em] text-yellow-700 dark:text-yellow-300">
+                {block.label || block.title}
+              </p>
+            )}
+            <p class:list={["text-lg leading-8 text-gray-800 dark:text-gray-200", (block.label || block.title) && "mt-3"]}>
+              {block.body}
+            </p>
+          </aside>
+        )}
+      </section>
+    ))
+  }
+</article>
+
+<style>
+  .case-study-article {
+    border-bottom: 1px solid rgb(229 231 235);
+  }
+
+  .case-study-gallery {
+    display: grid;
+    gap: 1.5rem;
+  }
+
+  .case-study-gallery__item {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .case-study-callout {
+    border-color: rgb(253 224 71 / 0.8);
+    background: rgb(254 252 232 / 0.8);
+  }
+
+  .case-study-callout[data-emphasis="decision"] {
+    border-color: rgb(147 197 253 / 0.8);
+    background: rgb(239 246 255 / 0.8);
+  }
+
+  .case-study-callout[data-emphasis="result"] {
+    border-color: rgb(110 231 183 / 0.8);
+    background: rgb(236 253 245 / 0.8);
+  }
+
+  .case-study-callout[data-emphasis="learning"] {
+    border-color: rgb(196 181 253 / 0.8);
+    background: rgb(245 243 255 / 0.8);
+  }
+
+  @media (min-width: 768px) {
+    .case-study-gallery[data-count="2"],
+    .case-study-gallery[data-count="3"],
+    .case-study-gallery[data-count="4"],
+    .case-study-gallery[data-count="5"] {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .case-study-gallery[data-count="3"] .case-study-gallery__item:first-child,
+    .case-study-gallery[data-count="5"] .case-study-gallery__item:first-child {
+      grid-column: 1 / -1;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .case-study-gallery[data-count="3"] .case-study-gallery__item:first-child {
+      grid-column: auto;
+      grid-row: span 2;
+    }
+
+    .case-study-gallery[data-count="5"] {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .case-study-gallery[data-count="5"] .case-study-gallery__item:first-child {
+      grid-column: auto;
+      grid-row: span 2;
+    }
+  }
+
+  :global(.dark) .case-study-article {
+    border-color: rgb(31 41 55);
+  }
+
+  :global(.dark) .case-study-callout {
+    border-color: rgb(161 98 7 / 0.7);
+    background: rgb(66 32 6 / 0.2);
+  }
+
+  :global(.dark) .case-study-callout[data-emphasis="decision"] {
+    border-color: rgb(29 78 216 / 0.7);
+    background: rgb(23 37 84 / 0.2);
+  }
+
+  :global(.dark) .case-study-callout[data-emphasis="result"] {
+    border-color: rgb(4 120 87 / 0.7);
+    background: rgb(2 44 34 / 0.2);
+  }
+
+  :global(.dark) .case-study-callout[data-emphasis="learning"] {
+    border-color: rgb(109 40 217 / 0.7);
+    background: rgb(46 16 101 / 0.2);
+  }
+</style>

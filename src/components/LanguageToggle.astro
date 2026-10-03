@@ -4,9 +4,10 @@ import { getLocalePath, getTranslations, type Locale } from "@/i18n/translations
 
 interface Props {
   locale: Locale
+  localizedPaths?: Record<Locale, string>
 }
 
-const { locale } = Astro.props
+const { locale, localizedPaths } = Astro.props
 const copy = getTranslations(locale)
 const languageOptions = [
   { locale: "en" as const, label: copy.language.english },
@@ -42,8 +43,8 @@ const languageOptions = [
                 "language-menu-option block px-2 py-1.5 rounded-sm hover:bg-neutral-400/40 dark:hover:bg-gray-500/50",
                 { "font-semibold text-yellow-600 dark:text-yellow-500": option.locale === locale },
               ]}
-              href={getLocalePath(option.locale)}
-              data-language-path={getLocalePath(option.locale)}
+              href={localizedPaths?.[option.locale] ?? getLocalePath(option.locale)}
+              data-language-path={localizedPaths?.[option.locale] ?? getLocalePath(option.locale)}
             >
               {option.label}
             </a>

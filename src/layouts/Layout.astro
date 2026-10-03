@@ -10,12 +10,17 @@ interface Props {
   title: string
   description: string
   locale: Locale
+  localizedPaths?: Record<Locale, string>
 }
 
-const { description, title, locale } = Astro.props
-const canonicalUrl = new URL(getLocalePath(locale), Astro.site)
-const englishUrl = new URL(getLocalePath("en"), Astro.site)
-const spanishUrl = new URL(getLocalePath("es"), Astro.site)
+const { description, title, locale, localizedPaths } = Astro.props
+const pagePaths = localizedPaths ?? {
+  en: getLocalePath("en"),
+  es: getLocalePath("es"),
+}
+const canonicalUrl = new URL(pagePaths[locale], Astro.site)
+const englishUrl = new URL(pagePaths.en, Astro.site)
+const spanishUrl = new URL(pagePaths.es, Astro.site)
 ---
 
 <!doctype html>
@@ -41,7 +46,7 @@ const spanishUrl = new URL(getLocalePath("es"), Astro.site)
       dark:bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(120,119,198,0.3),rgba(255,255,255,0))]"
     >
     </div>
-    <Header locale={locale} />
+    <Header locale={locale} localizedPaths={pagePaths} />
     <slot />
     <Footer locale={locale} />
     <style is:global>
@@ -65,6 +70,13 @@ const spanishUrl = new URL(getLocalePath("es"), Astro.site)
       @media (prefers-reduced-motion: reduce) {
         html {
           scroll-behavior: auto;
+        }
+
+        ::view-transition-group(*),
+        ::view-transition-old(root),
+        ::view-transition-new(root) {
+          animation-duration: 0.01ms !important;
+          animation-iteration-count: 1 !important;
         }
       }
 

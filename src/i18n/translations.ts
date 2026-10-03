@@ -1,3 +1,5 @@
+import type { ProjectId } from "@/data/projects"
+
 export const locales = ["en", "es"] as const
 
 export type Locale = (typeof locales)[number]
@@ -52,11 +54,20 @@ export interface Translation {
     about: string
   }
   experience: ExperienceTranslation[]
-  projects: Record<"drowsiness" | "cima" | "portfolio" | "jmp", ProjectTranslation>
+  projects: Record<ProjectId, ProjectTranslation>
   projectsUi: {
     imageAlt: string
-    code: string
     preview: string
+    comingSoon: string
+    caseStudy: string
+  }
+  caseStudyUi: {
+    eyebrow: string
+    backToProjects: string
+    technologies: string
+    contents: string
+    resources: string
+    repositories: string
   }
   about: {
     introStart: string
@@ -181,12 +192,7 @@ const en: Translation = {
     cima: {
       title: "CIMA Virtual Classroom - Platform",
       description:
-        "A virtual platform developed for CIMA school during the pandemic and used by its students. I led the frontend team using Angular, while the backend was implemented with Spring Boot and Node.js.",
-    },
-    portfolio: {
-      title: "Prophet Code Portfolio - Prototype",
-      description:
-        "A Figma portfolio prototype for the Prophet Code brand. It presents my software development experience through a modern, intuitive, and mobile-friendly design.",
+        "A virtual platform developed for CIMA school during the pandemic and used by its students. I led the frontend work with Angular and React, supported by Flask and Express services with PostgreSQL.",
     },
     jmp: {
       title: "JMPAquaculture - Monitor",
@@ -196,8 +202,17 @@ const en: Translation = {
   },
   projectsUi: {
     imageAlt: "Prophet Code project",
-    code: "Code",
     preview: "Preview",
+    comingSoon: "Coming soon",
+    caseStudy: "View case study",
+  },
+  caseStudyUi: {
+    eyebrow: "Project case study",
+    backToProjects: "Back to projects",
+    technologies: "Technologies",
+    contents: "On this page",
+    resources: "Project resources",
+    repositories: "Repositories",
   },
   about: {
     introStart: "My name is Alexander Ávila Briones. I am a Systems Engineer and ",
@@ -325,12 +340,7 @@ const es: Translation = {
     cima: {
       title: "CIMA Aula Virtual - Plataforma",
       description:
-        "Plataforma virtual desarrollada durante la pandemia para el colegio CIMA, utilizada por los alumnos. Lideré un equipo de frontend con Angular, y el backend fue implementado con Spring Boot y Node.js.",
-    },
-    portfolio: {
-      title: "Portafolio Prophet Code - Prototipo",
-      description:
-        "Prototipo de portafolio para la marca Prophet Code, diseñado en Figma. Muestra mi experiencia en desarrollo de software con un diseño moderno, intuitivo y adaptable a móviles.",
+        "Plataforma virtual desarrollada durante la pandemia para el colegio CIMA y utilizada por sus alumnos. Lideré el trabajo frontend con Angular y React, apoyado por servicios en Flask y Express con PostgreSQL.",
     },
     jmp: {
       title: "JMPAquaculture - Monitor",
@@ -340,8 +350,17 @@ const es: Translation = {
   },
   projectsUi: {
     imageAlt: "Proyecto de Prophet Code",
-    code: "Código",
     preview: "Vista previa",
+    comingSoon: "Próximamente",
+    caseStudy: "Ver caso de estudio",
+  },
+  caseStudyUi: {
+    eyebrow: "Caso de estudio",
+    backToProjects: "Volver a proyectos",
+    technologies: "Tecnologías",
+    contents: "En esta página",
+    resources: "Recursos del proyecto",
+    repositories: "Repositorios",
   },
   about: {
     introStart: "Me llamo Alexander Ávila Briones, soy Ingeniero de Sistemas y ",

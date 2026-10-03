@@ -1,23 +1,8 @@
 ---
 import LinkButton from "./LinkButton.astro"
+import ProjectTags from "./ProjectTags.astro"
 import LinkIcon from "./icons/Link.astro"
-import GitHubIcon from "./icons/GitHub.astro"
-import NextJSIcon from "./icons/NextJS.astro"
-import TailwindIcon from "./icons/Tailwind.astro"
-import AngularIcon from "./icons/Angular.astro"
-import SpringIcon from "./icons/Spring.astro"
-import RaspberryPiIcon from "./icons/RaspberryPi.astro"
-import PythonIcon from "./icons/Python.astro"
-import FigmaIcon from "./icons/Figma.astro"
-import GatsbyIcon from "./icons/Gatsby.astro"
-import SassIcon from "./icons/Sass.astro"
-import ReactIcon from "./icons/React.astro"
-import CssIcon from "./icons/Css.astro"
-import ExpressIcon from "./icons/Express.astro"
-import IBMIcon from "./icons/Ibm.astro"
-import FlutterIcon from "./icons/Flutter.astro"
-import BootstrapIcon from "./icons/Bootstrap.astro"
-import TwilioIcon from "./icons/Twilio.astro"
+import { getProjectCaseStudyPath, PROJECTS } from "@/data/projects"
 import { getTranslations, type Locale } from "@/i18n/translations"
 
 interface Props {
@@ -26,150 +11,18 @@ interface Props {
 
 const { locale } = Astro.props
 const copy = getTranslations(locale)
-
-const TAGS = {
-  NEXT: {
-    name: "Next.js",
-    class: "bg-[#bbbaba] text-black font-medium",
-    icon: NextJSIcon,
-  },
-  TAILWIND: {
-    name: "Tailwind CSS",
-    class: "bg-[#d6eef9] text-black font-medium",
-    icon: TailwindIcon,
-  },
-  ANGULAR: {
-    name: 'Angular',
-    class: 'bg-[#efd5ff] text-black font-medium',
-    icon: AngularIcon,
-  },
-  SPRING: {
-    name: 'Spring',
-    class: 'bg-[#d7f2c3] text-black font-medium',
-    icon: SpringIcon
-  },
-  RASPBERRY_PI: {
-    name: 'Raspberry PI',
-    class: 'bg-[#edb1c3] text-black font-medium',
-    icon: RaspberryPiIcon,
-  },
-  PYTHON: {
-    name: 'Python',
-    class: 'bg-[#bed0f0] text-black font-medium',
-    icon: PythonIcon,
-  },
-  FIGMA: {
-    name: 'Figma',
-    class: 'bg-[#fff1c9] text-black font-medium',
-    icon: FigmaIcon,
-  },
-  GATSBY: {
-    name: 'Gatsby',
-    class: 'bg-[#d9cbff] text-black font-medium',
-    icon: GatsbyIcon,
-  },
-  SASS: {
-    name: 'Sass',
-    class: 'bg-[#ffcbe5] text-black font-medium',
-    icon: SassIcon
-  },
-  REACT: {
-    name: 'React',
-    class: 'bg-[#6d85b0] text-black font-medium',
-    icon: ReactIcon
-  },
-  CSS: {
-    name: 'CSS',
-    class: 'bg-[#bee5ff] text-black font-medium',
-    icon: CssIcon,
-  },
-  EXPRESS: {
-    name: 'Express',
-    class: 'bg-[#b0b5b9] text-black font-medium',
-    icon: ExpressIcon
-  },
-  BOOTSTRAP: {
-    name: 'Bootstrap',
-    class: 'bg-[#e2c8ff] text-black font-medium',
-    icon: BootstrapIcon,
-  },
-  IBM: {
-    name: 'IBM',
-    class: 'bg-[#c5e2ff] text-black font-medium',
-    icon: IBMIcon
-  },
-  FLUTTER: {
-    name: 'Flutter',
-    class: 'bg-[#bcebff] text-black font-medium',
-    icon: FlutterIcon,
-  },
-  TWILIO: {
-    name: 'Twilio',
-    class: 'bg-[#ffbcbc] text-black font-medium',
-    icon: TwilioIcon,
-  }
-};
-
-const PROJECTS = [
-  {
-    id: "drowsiness" as const,
-    github: 'https://github.com/prophet-99/drowsiness-app-frontend',
-    image: "/projects/drowsiness-project.webp",
-    tags: [TAGS.ANGULAR, TAGS.SPRING, TAGS.RASPBERRY_PI, TAGS.PYTHON],
-  },
-  {
-    id: "cima" as const,
-    link: 'https://plataforma.colegiocima.edu.pe/CampusVirtual',
-    image: "/projects/cima.webp",
-    tags: [TAGS.ANGULAR, TAGS.SPRING, TAGS.EXPRESS, TAGS.BOOTSTRAP]
-  },
-  {
-    id: "portfolio" as const,
-    link: "https://www.figma.com/proto/t6Tp4tyj4slndIjUxUYr0a/Portfolio?page-id=0%3A1&node-id=1-2&node-type=CANVAS&viewport=553%2C-88%2C0.18&t=8j7zMbORFi1ADAYC-1&scaling=min-zoom&content-scaling=fixed&starting-point-node-id=1%3A2",
-    image: "/projects/prophet-code-portfolio.webp",
-    tags: [TAGS.FIGMA],
-  },
-  {
-    id: "jmp" as const,
-    github: 'https://github.com/prophet-99/jmpaquaculture',
-    image: "/projects/jmpaquaculture.webp",
-    tags: [TAGS.SPRING, TAGS.TWILIO, TAGS.BOOTSTRAP],
-  },
-  /* Proyectos conservados para reactivarlos más adelante.
-  {
-    title: "CIMA English - Flutter App",
-    description: "Contribuí al desarrollo de una app en Flutter para el colegio CIMA, usando IA de IBM Watson y backend en Node.js, e implementé Clean Architecture para mejorar su estructura.",
-    link: 'https://play.google.com/store/apps/details?id=pe.edu.colegiocima.english_cima',
-    image: "/projects/english-cima.webp",
-    tags: [TAGS.FLUTTER, TAGS.EXPRESS, TAGS.IBM],
-  },
-  {
-    title: "CIMA Board - Pizarra Virtual",
-    description: "Desarrollé una pizarra virtual en React, integrada como componente en Angular para la plataforma virtual del colegio CIMA.",
-    github: 'https://github.com/prophet-99/virtual-whiteboard',
-    link: 'https://prophet-99.github.io/virtual-whiteboard',
-    image: "/projects/virtual-whiteboard.webp",
-    tags: [TAGS.REACT, TAGS.ANGULAR, TAGS.SASS],
-  },
-  {
-    title: "WILJAM SAC - Landing Page",
-    description: "Landing page para WILJAM, diseñada y maquetada en Gatsby.js, optimizada para móviles. El contenido mostrado es de ejemplo, ya que la implementación final fue realizada por su equipo de TI.",
-    github: 'https://github.com/prophet-99/wiljam-landing-frontend',
-    link: 'https://prophet-99.github.io/wiljam-landing-frontend',
-    image: "/projects/wiljam-landing.webp",
-    tags: [TAGS.GATSBY, TAGS.SASS],
-  },
-  */
-];
 ---
 
 <div class="flex flex-col gap-y-16">
   {
     PROJECTS.map(
-      ({ id, image, tags, link, github }) => (
+      ({ id, image, tags, preview, caseStudy }) => (
         <article class="flex flex-col space-x-0 space-y-8 group md:flex-row md:space-x-8 md:space-y-0">
           <div class="w-full md:w-1/2">
-            <div class="relative flex flex-col items-center col-span-6 row-span-5 gap-8 transition duration-500 ease-in-out transform shadow-xl overflow-clip rounded-xl sm:rounded-xl md:group-hover:-translate-y-1 md:group-hover:shadow-2xl lg:border lg:border-gray-800 lg:hover:border-gray-700 lg:hover:bg-gray-800/50">
+            <div
+              transition:name={`project-image-${id}`}
+              class="relative flex flex-col items-center col-span-6 row-span-5 gap-8 transition duration-500 ease-in-out transform shadow-xl overflow-clip rounded-xl sm:rounded-xl md:group-hover:-translate-y-1 md:group-hover:shadow-2xl lg:border lg:border-gray-800 lg:hover:border-gray-700 lg:hover:bg-gray-800/50"
+            >
               <img
                 alt={`${copy.projectsUi.imageAlt}: ${copy.projects[id].title}`}
                 class="object-cover object-top w-full h-56 transition duration-500 sm:h-full md:scale-110 md:group-hover:scale-105"
@@ -183,31 +36,30 @@ const PROJECTS = [
               {copy.projects[id].title}
             </h3>
             <div class="flex flex-wrap mt-2">
-              <ul class="flex flex-row flex-wrap mb-2 gap-2">
-                {tags.map((tag) => (
-                  <li>
-                    <span
-                      class={`flex gap-x-2 rounded-full text-xs ${tag.class} py-1 px-2 `}
-                    >
-                      <tag.icon class="size-4" />
-                      {tag.name}
-                    </span>
-                  </li>
-                ))}
-              </ul>
+              <div class="mb-2">
+                <ProjectTags tags={tags} />
+              </div>
               <div class="mt-2 text-gray-700 dark:text-gray-400">{copy.projects[id].description}</div>
-              <footer class="flex items-end justify-start mt-4 gap-x-4">
-                  {github && (
-                    <LinkButton href={github}>
-                      <GitHubIcon class="size-6" />
-                      {copy.projectsUi.code}
-                    </LinkButton>
-                  )}
-                  {link && (
-                    <LinkButton href={link}>
+              <footer class="flex flex-wrap items-end justify-start mt-4 gap-3">
+                  <a
+                    href={getProjectCaseStudyPath(locale, caseStudy.slug)}
+                    class="inline-flex items-center justify-center gap-2 rounded-xl border border-yellow-500/60 bg-yellow-400/10 px-3 py-2 text-base font-medium text-gray-800 transition hover:border-yellow-500 hover:bg-yellow-400/20 focus:outline-none focus-visible:ring focus-visible:ring-yellow-500/80 focus-visible:ring-offset-2 dark:text-white dark:focus-visible:ring-offset-neutral-950"
+                  >
+                    {copy.projectsUi.caseStudy}
+                    <span aria-hidden="true">→</span>
+                  </a>
+                  {preview.status === "available" ? (
+                    <LinkButton href={preview.url}>
                       <LinkIcon class="size-4" />
                       {copy.projectsUi.preview}
                     </LinkButton>
+                  ) : (
+                    <span
+                      aria-disabled="true"
+                      class="inline-flex cursor-not-allowed items-center justify-center gap-2 rounded-xl border border-gray-300 bg-gray-100 px-3 py-2 text-base text-gray-500 opacity-75 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400"
+                    >
+                      {copy.projectsUi.comingSoon}
+                    </span>
                   )}
                 </footer>
             </div>
