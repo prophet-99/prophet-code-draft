@@ -28,14 +28,21 @@ export interface ProjectRepository {
   url: string
 }
 
+export interface ProjectReference {
+  label: Record<Locale, string>
+  url: string
+}
+
 export interface Project {
   id: ProjectId
   image: string
   tags: ProjectTechnology[]
   preview: ProjectPreview
   repositories: ProjectRepository[]
+  references: ProjectReference[]
   caseStudy: {
     slug: CaseStudyProjectId
+    isPublished: boolean
     metaDescription: Record<Locale, string>
   }
 }
@@ -96,34 +103,54 @@ export const TAGS = {
 export const PROJECTS: Project[] = [
   {
     id: "drowsiness",
-    image: "/projects/drowsiness-project.webp",
+    image: "/projects/drowsiness-project/showcase.webp",
     tags: [TAGS.ANGULAR, TAGS.SPRING, TAGS.RASPBERRY_PI, TAGS.PYTHON],
     preview: { status: "comingSoon" },
     repositories: [
+      {
+        label: { en: "Embedded core", es: "Núcleo embebido" },
+        url: "https://github.com/prophet-99/drowsiness-app-vidds",
+      },
+      {
+        label: { en: "Backend", es: "Backend" },
+        url: "https://github.com/prophet-99/drowsiness-app-backend",
+      },
       {
         label: { en: "Frontend", es: "Frontend" },
         url: "https://github.com/prophet-99/drowsiness-app-frontend",
       },
     ],
+    references: [
+      {
+        label: {
+          en: "Systems Engineering thesis",
+          es: "Tesis de Ingeniería de Sistemas",
+        },
+        url: "https://repositorio.unprg.edu.pe/handle/20.500.12893/12952",
+      },
+    ],
     caseStudy: {
       slug: "drowsiness",
+      isPublished: true,
       metaDescription: {
-        en: "Case study of an IoT system for detecting driver drowsiness and sending real-time alerts.",
-        es: "Caso de estudio de un sistema IoT para detectar somnolencia en conductores y enviar alertas en tiempo real.",
+        en: "Systems Engineering thesis case study of VIDDS, an AI and IoT prototype for driver-drowsiness detection, alerts, and real-time incident tracking.",
+        es: "Caso de estudio de tesis de Ingeniería de Sistemas sobre VIDDS, un prototipo de inteligencia artificial e IoT para detectar somnolencia, alertar y rastrear incidentes en tiempo real.",
       },
     },
   },
   {
     id: "cima",
-    image: "/projects/cima.webp",
+    image: "/projects/cima-classroom-project/showcase.webp",
     tags: [TAGS.ANGULAR, TAGS.REACT, TAGS.FLASK, TAGS.EXPRESS, TAGS.POSTGRESQL],
     preview: {
       status: "available",
       url: "https://plataforma.colegiocima.edu.pe/CampusVirtual",
     },
     repositories: [],
+    references: [],
     caseStudy: {
       slug: "cima",
+      isPublished: false,
       metaDescription: {
         en: "Case study of the virtual classroom platform developed for CIMA school during the pandemic.",
         es: "Caso de estudio de la plataforma de aula virtual desarrollada para el colegio CIMA durante la pandemia.",
@@ -132,7 +159,7 @@ export const PROJECTS: Project[] = [
   },
   {
     id: "jmp",
-    image: "/projects/jmpaquaculture.webp",
+    image: "/projects/jmpaquaculture-project/showcase.webp",
     tags: [TAGS.SPRING, TAGS.TWILIO, TAGS.BOOTSTRAP],
     preview: { status: "comingSoon" },
     repositories: [
@@ -141,8 +168,10 @@ export const PROJECTS: Project[] = [
         url: "https://github.com/prophet-99/jmpaquaculture",
       },
     ],
+    references: [],
     caseStudy: {
       slug: "jmp",
+      isPublished: false,
       metaDescription: {
         en: "Case study of an aquaculture monitoring application built for a client in Brazil.",
         es: "Caso de estudio de una aplicación de monitoreo de acuicultura desarrollada para un cliente en Brasil.",

@@ -8,6 +8,21 @@ export interface CaseStudyMedia {
   caption?: string
 }
 
+export interface CaseStudyVideo {
+  src: string
+  orientation: "landscape" | "portrait"
+  accessibleName: string
+  caption: string
+}
+
+export type CaseStudyFormulaKind = "eyeAspectRatio"
+
+export interface CaseStudyFormula {
+  kind: CaseStudyFormulaKind
+  accessibleName: string
+  caption: string
+}
+
 interface CaseStudyBlockBase {
   id: string
   title?: string
@@ -29,6 +44,16 @@ export interface CaseStudyListBlock extends CaseStudyBlockBase {
 export interface CaseStudyImageBlock extends CaseStudyBlockBase {
   type: "image"
   image: CaseStudyMedia
+}
+
+export interface CaseStudyVideoBlock extends CaseStudyBlockBase {
+  type: "video"
+  video: CaseStudyVideo
+}
+
+export interface CaseStudyFormulaBlock extends CaseStudyBlockBase {
+  type: "formula"
+  formula: CaseStudyFormula
 }
 
 export interface CaseStudyGalleryBlock extends CaseStudyBlockBase {
@@ -53,6 +78,8 @@ export type CaseStudyBlock =
   | CaseStudyTextBlock
   | CaseStudyListBlock
   | CaseStudyImageBlock
+  | CaseStudyVideoBlock
+  | CaseStudyFormulaBlock
   | CaseStudyGalleryBlock
   | CaseStudyDiagramBlock
   | CaseStudyCalloutBlock
@@ -73,6 +100,27 @@ const assertMedia = (media: CaseStudyMedia, blockId: string): void => {
   }
 }
 
+const assertVideo = (video: CaseStudyVideo, blockId: string): void => {
+  if (
+    !video.src.trim() ||
+    !video.accessibleName.trim() ||
+    !video.caption.trim() ||
+    !["landscape", "portrait"].includes(video.orientation)
+  ) {
+    throw new Error(
+      `Case study block "${blockId}" requires a video source, localized accessible name, and localized caption.`,
+    )
+  }
+}
+
+const assertFormula = (formula: CaseStudyFormula, blockId: string): void => {
+  if (!formula.accessibleName.trim() || !formula.caption.trim()) {
+    throw new Error(
+      `Case study block "${blockId}" requires a localized formula name and caption.`,
+    )
+  }
+}
+
 const validateLocaleContent = (content: CaseStudyContent, locale: Locale): void => {
   const ids = new Set<string>()
 
@@ -83,6 +131,8 @@ const validateLocaleContent = (content: CaseStudyContent, locale: Locale): void 
     ids.add(block.id)
 
     if (block.type === "image") assertMedia(block.image, block.id)
+    if (block.type === "video") assertVideo(block.video, block.id)
+    if (block.type === "formula") assertFormula(block.formula, block.id)
     if (block.type === "diagram") assertMedia(block.diagram, block.id)
     if (block.type === "gallery") {
       if (block.images.length < 1 || block.images.length > 5) {

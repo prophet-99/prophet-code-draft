@@ -68,6 +68,7 @@ export interface Translation {
     contents: string
     resources: string
     repositories: string
+    academicReferences: string
   }
   about: {
     introStart: string
@@ -187,7 +188,7 @@ const en: Translation = {
     drowsiness: {
       title: "Drowsiness Project - IoT + Deep Learning + Software",
       description:
-        "An IoT system that detects driver drowsiness and sends real-time alerts. Built with Angular, Spring Boot, Raspberry Pi, MediaPipe, and Python, and tested in Lambayeque, Peru.",
+        "My Systems Engineering thesis: VIDDS combines AI and IoT to detect possible driver drowsiness, alert the driver, and report incidents in real time. The complete prototype was tested in Lambayeque, Peru.",
     },
     cima: {
       title: "CIMA Virtual Classroom - Platform",
@@ -213,6 +214,7 @@ const en: Translation = {
     contents: "On this page",
     resources: "Project resources",
     repositories: "Repositories",
+    academicReferences: "Academic references",
   },
   about: {
     introStart: "My name is Alexander Ávila Briones. I am a Systems Engineer and ",
@@ -335,7 +337,7 @@ const es: Translation = {
     drowsiness: {
       title: "Drowsiness Project - IoT + Deep Learning + Software",
       description:
-        "Sistema IoT que detecta somnolencia en conductores y envía alertas en tiempo real. Desarrollado con Angular, Spring Boot, Raspberry Pi, MediaPipe y Python. Probado en Lambayeque, Perú.",
+        "Mi tesis de Ingeniería de Sistemas: VIDDS combina inteligencia artificial e IoT para detectar una posible somnolencia, alertar al conductor y reportar incidentes en tiempo real. El prototipo completo fue probado en Lambayeque, Perú.",
     },
     cima: {
       title: "CIMA Aula Virtual - Plataforma",
@@ -361,6 +363,7 @@ const es: Translation = {
     contents: "En esta página",
     resources: "Recursos del proyecto",
     repositories: "Repositorios",
+    academicReferences: "Referencias académicas",
   },
   about: {
     introStart: "Me llamo Alexander Ávila Briones, soy Ingeniero de Sistemas y ",

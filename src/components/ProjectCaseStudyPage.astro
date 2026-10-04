@@ -128,6 +128,21 @@ const projectListPath = `${getLocalePath(locale)}#proyectos`
               </div>
             </div>
           )}
+          {project.references.length > 0 && (
+            <div>
+              <h3 class="mb-3 text-sm font-semibold uppercase tracking-[0.14em] text-gray-500 dark:text-gray-400">
+                {copy.caseStudyUi.academicReferences}
+              </h3>
+              <div class="flex flex-wrap gap-3">
+                {project.references.map((reference) => (
+                  <LinkButton href={reference.url}>
+                    <LinkIcon class="size-4" />
+                    {reference.label[locale]}
+                  </LinkButton>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </SectionContainer>
